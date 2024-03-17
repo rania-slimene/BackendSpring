@@ -22,11 +22,18 @@ public class UserServiceImpl  implements UserService {
 
     @Override
     public User SignUp(User user) {
+
+
         User user1 = new User();
         user1.setUsername(user.getUsername());
         user1.setLastname(user.getLastname());
         user1.setEmail(user.getEmail());
         user1.setPassword((user.getPassword()));
+
+        User userByEmail = userRepository.findUserByEmail(user.getEmail());
+        if (userByEmail!= null){
+            throw new IllegalArgumentException("Email already used ");
+    }
         userRepository.save(user1);
 
         return user1;

@@ -7,19 +7,17 @@ import jakarta.persistence.Id;
 import lombok.Data;
 @Entity
 @Data
-public class Client {
+public class Staff {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Long officeId;
+    private String isLoanOfficer;
     private String firstname;
-    private String lastname;
-    private String MobileNumber;
-    private String dateFormat;
+    private String   lastname;
+    private String joiningDate;
     private String locale;
-    private boolean active;
+    private String dateFormat;
 
 
 }
