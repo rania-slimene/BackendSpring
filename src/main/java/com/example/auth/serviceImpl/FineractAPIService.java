@@ -1,7 +1,6 @@
 package com.example.auth.serviceImpl;
 
-import DTO.ClientDtoFineract;
-import DTO.PutClientDtoFineract;
+import DTO.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,7 @@ public class FineractAPIService  extends AbstractApiService{
         return response.getBody();
     }
 
-    public Object getClienById(Long id) {
+    public Object getClienById (Long id) {
         HttpHeaders headers = this.createHeaders();
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<Object> response = restTemplate.exchange(fineractApiUrl + "/clients/" + id, HttpMethod.GET, entity, Object.class);
@@ -142,6 +141,109 @@ public class FineractAPIService  extends AbstractApiService{
 
 
     }
-}
+    public Object DeleteGroup(Long id) {
+        HttpHeaders headers = this.createHeaders();
+        HttpEntity<PutGroupDtoFineract> entity = new HttpEntity<>(headers);
+        try {
+            ResponseEntity<Object> response = restTemplate.exchange(fineractApiUrl + "/groups/" + id, HttpMethod.DELETE, entity, Object.class);
+            if (response.getStatusCode().is2xxSuccessful()) {
+                return "Group supprime avec succès" + response.getBody();
+            } else {
+                return "Group lors de suppression du client: " + response.getBody();
+            }
+        } catch (HttpClientErrorException.NotFound e) {
+            return "Group non trouvé avec l'ID: " + id;
+        } catch (RestClientException e) {
+            return "Erreur lors de la communication avec l'API Fineract: " + e.getMessage();
+        }
+
+
+    }
+
+    public Object addCenter(CenterDtoFineract center) {
+        CenterDtoFineract center1 = new CenterDtoFineract();
+        center1.setOfficeId(center.getOfficeId());
+        center1.setName(center.getName());
+        center1.setActive(center.getActive());
+        center1.setDateFormat(center.getDateFormat());
+        center1.setActivationDate(center.getActivationDate());
+        center1.setLocale(center.getLocale());
+        center1.setGroupMembers(center.getGroupMembers());
+        if (center.getOfficeId() == null || center.getName() == null ) {
+            return "Erreur lors de l'ajout du client: Certaines données obligatoires sont manquantes";
+        }
+        HttpHeaders headers = this.createHeaders();
+        HttpEntity<CenterDtoFineract> entity = new HttpEntity<>(center1, headers);
+
+        try {
+            ResponseEntity<Object> response = restTemplate.postForEntity(fineractApiUrl + "/centers", entity, Object.class);
+            if (response.getStatusCode().is2xxSuccessful()) {
+                return "center ajouté avec succès" + response.getBody();
+            } else {
+                return "Erreur lors de l'ajout du center: " + response.getBody();
+            }
+        } catch (RestClientException e) {
+            return "Erreur lors de la communication avec l'API Fineract: " + e.getMessage();
+        }
+    }
+    public Object getgroupe() {
+        HttpHeaders headers = this.createHeaders();
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<Object> response = restTemplate.exchange(fineractApiUrl + "/groups", HttpMethod.GET, entity, Object.class);
+        return response.getBody();
+    }
+
+    public Object addGroup(GroupDtoFineract group) {
+        GroupDtoFineract group1 = new GroupDtoFineract();
+        group1.setName(group.getName());
+        group1.setOfficeId(group.getOfficeId());
+
+        if (group.getOfficeId() == null || group.getName() == null ) {
+            return "Erreur lors de l'ajout du group: Certaines données obligatoires sont manquantes";
+        }
+        HttpHeaders headers = this.createHeaders();
+        HttpEntity<GroupDtoFineract> entity = new HttpEntity<>(group1, headers);
+
+
+        try {
+            ResponseEntity<Object> response = restTemplate.postForEntity(fineractApiUrl + "/groups", entity, Object.class);
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                return "Groupe ajouté avec succès" + response.getBody();
+            } else {
+                return "Erreur lors de l'ajout du groupe: " + response.getBody();
+            }
+        } catch (RestClientException e) {
+            return "Erreur lors de la communication avec l'API Fineract: " + e.getMessage();
+        }
+
+    }
+
+
+    public Object updateGroup(Long id, PutGroupDtoFineract group) {
+        PutGroupDtoFineract group1 = new PutGroupDtoFineract();
+        group1.setName(group.getName());
+
+        HttpHeaders headers = this.createHeaders();
+        HttpEntity<PutGroupDtoFineract> entity = new HttpEntity<>(group1, headers);
+
+
+        try {
+            ResponseEntity<Object> response = restTemplate.exchange(fineractApiUrl + "/groups/" + id,HttpMethod.PUT, entity, Object.class);
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                return "Groupe modifié avec succès" + response.getBody();
+            } else {
+                return "Erreur lors de la modification du groupe: " + response.getBody();
+            }
+        } catch (RestClientException e) {
+            return "Erreur lors de la communication avec l'API Fineract: " + e.getMessage();
+        }
+
+    }
+
+
+
+};
 
 
