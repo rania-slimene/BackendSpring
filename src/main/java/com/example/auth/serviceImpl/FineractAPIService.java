@@ -34,37 +34,37 @@ public class FineractAPIService  extends AbstractApiService{
         return response.getBody();
     }
 
-//    public Object addStaff(StaffDtoFineract staff) {
-//        StaffDtoFineract staff1 = new StaffDtoFineract();
-//        staff1.setOfficeId(staff.getOfficeId());
-//        staff1.setFirstname(staff.getFirstname());
-//        staff1.setLastname(staff.getLastname());
-//        staff1.setIsLoanOfficer(staff.getIsLoanOfficer());
-//        staff1.setLocale(staff.getLocale());
-//        staff1.setJoiningDate(staff.getJoiningDate());
-//        staff1.setDateFormat(staff.getDateFormat());
-//
-//        if (staff.getOfficeId() == null || staff.getFirstname() == null || staff.getLastname() == null || staff.getIsLoanOfficer() == null || staff.getJoiningDate() == null || staff.getLocale() == null || staff.getDateFormat() == null) {
-//            return "Erreur lors de l'ajout du client: Certaines données obligatoires sont manquantes";
-//        }
-//
-//        HttpHeaders headers = this.createHeaders();
-//        HttpEntity<StaffDtoFineract> entity = new HttpEntity<>(staff1, headers);
-//
-//
-//        try {
-//            ResponseEntity<Object> response = restTemplate.postForEntity(fineractApiUrl + "/staff", entity, Object.class);
-//
-//            if (response.getStatusCode().is2xxSuccessful()) {
-//                return "Client ajouté avec succès" + response.getBody();
-//            } else {
-//                return "Erreur lors de l'ajout du client: " + response.getBody();
-//            }
-//        } catch (RestClientException e) {
-//            return "Erreur lors de la communication avec l'API Fineract: " + e.getMessage();
-//        }
-//
-//    }
+    public Object addStaff(StaffDtoFineract staff) {
+        StaffDtoFineract staff1 = new StaffDtoFineract();
+        staff1.setOfficeId(staff.getOfficeId());
+        staff1.setFirstname(staff.getFirstname());
+        staff1.setLastname(staff.getLastname());
+        staff1.setIsLoanOfficer(staff.getIsLoanOfficer());
+        staff1.setLocale(staff.getLocale());
+        staff1.setJoiningDate(staff.getJoiningDate());
+        staff1.setDateFormat(staff.getDateFormat());
+
+        if (staff.getOfficeId() == null || staff.getFirstname() == null || staff.getLastname() == null || staff.getIsLoanOfficer() == null || staff.getJoiningDate() == null || staff.getLocale() == null || staff.getDateFormat() == null) {
+            return "Erreur lors de l'ajout du client: Certaines données obligatoires sont manquantes";
+        }
+
+        HttpHeaders headers = this.createHeaders();
+        HttpEntity<StaffDtoFineract> entity = new HttpEntity<>(staff1, headers);
+
+
+        try {
+            ResponseEntity<Object> response = restTemplate.postForEntity(fineractApiUrl + "/staff", entity, Object.class);
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                return "Client ajouté avec succès" + response.getBody();
+            } else {
+                return "Erreur lors de l'ajout du client: " + response.getBody();
+            }
+        } catch (RestClientException e) {
+            return "Erreur lors de la communication avec l'API Fineract: " + e.getMessage();
+        }
+
+    }
 
     public Object addClient(ClientDtoFineract client) {
         ClientDtoFineract client1 = new ClientDtoFineract();
