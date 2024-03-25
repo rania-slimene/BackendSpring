@@ -13,10 +13,10 @@ public class FineractAPIService  extends AbstractApiService{
     @Value("${fineract.api.url}")
     private String fineractApiUrl;
 
-    public String getOffices() {
+    public Object getOffices() {
         HttpHeaders headers = this.createHeaders();
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = restTemplate.exchange(fineractApiUrl + "/offices", HttpMethod.GET, entity, String.class);
+        HttpEntity<Object> entity = new HttpEntity<>(headers);
+        ResponseEntity<Object> response = restTemplate.exchange(fineractApiUrl + "/offices", HttpMethod.GET, entity, Object.class);
         return response.getBody();
     }
 
@@ -24,6 +24,12 @@ public class FineractAPIService  extends AbstractApiService{
         HttpHeaders headers = this.createHeaders();
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<Object> response = restTemplate.exchange(fineractApiUrl + "/clients", HttpMethod.GET, entity, Object.class);
+        return response.getBody();
+    }
+    public Object getGLAccounts() {
+        HttpHeaders headers = this.createHeaders();
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<Object> response = restTemplate.exchange(fineractApiUrl + "/glaccounts", HttpMethod.GET, entity, Object.class);
         return response.getBody();
     }
 
@@ -34,37 +40,37 @@ public class FineractAPIService  extends AbstractApiService{
         return response.getBody();
     }
 
-//    public Object addStaff(StaffDtoFineract staff) {
-//        StaffDtoFineract staff1 = new StaffDtoFineract();
-//        staff1.setOfficeId(staff.getOfficeId());
-//        staff1.setFirstname(staff.getFirstname());
-//        staff1.setLastname(staff.getLastname());
-//        staff1.setIsLoanOfficer(staff.getIsLoanOfficer());
-//        staff1.setLocale(staff.getLocale());
-//        staff1.setJoiningDate(staff.getJoiningDate());
-//        staff1.setDateFormat(staff.getDateFormat());
-//
-//        if (staff.getOfficeId() == null || staff.getFirstname() == null || staff.getLastname() == null || staff.getIsLoanOfficer() == null || staff.getJoiningDate() == null || staff.getLocale() == null || staff.getDateFormat() == null) {
-//            return "Erreur lors de l'ajout du client: Certaines données obligatoires sont manquantes";
-//        }
-//
-//        HttpHeaders headers = this.createHeaders();
-//        HttpEntity<StaffDtoFineract> entity = new HttpEntity<>(staff1, headers);
-//
-//
-//        try {
-//            ResponseEntity<Object> response = restTemplate.postForEntity(fineractApiUrl + "/staff", entity, Object.class);
-//
-//            if (response.getStatusCode().is2xxSuccessful()) {
-//                return "Client ajouté avec succès" + response.getBody();
-//            } else {
-//                return "Erreur lors de l'ajout du client: " + response.getBody();
-//            }
-//        } catch (RestClientException e) {
-//            return "Erreur lors de la communication avec l'API Fineract: " + e.getMessage();
-//        }
-//
-//    }
+    public Object addStaff(StaffDtoFineract staff) {
+        StaffDtoFineract staff1 = new StaffDtoFineract();
+        staff1.setOfficeId(staff.getOfficeId());
+        staff1.setFirstname(staff.getFirstname());
+        staff1.setLastname(staff.getLastname());
+        staff1.setIsLoanOfficer(staff.getIsLoanOfficer());
+        staff1.setLocale(staff.getLocale());
+        staff1.setJoiningDate(staff.getJoiningDate());
+        staff1.setDateFormat(staff.getDateFormat());
+
+        if (staff.getOfficeId() == null || staff.getFirstname() == null || staff.getLastname() == null || staff.getIsLoanOfficer() == null || staff.getJoiningDate() == null || staff.getLocale() == null || staff.getDateFormat() == null) {
+            return "Erreur lors de l'ajout du client: Certaines données obligatoires sont manquantes";
+        }
+
+        HttpHeaders headers = this.createHeaders();
+        HttpEntity<StaffDtoFineract> entity = new HttpEntity<>(staff1, headers);
+
+
+        try {
+            ResponseEntity<Object> response = restTemplate.postForEntity(fineractApiUrl + "/staff", entity, Object.class);
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                return "Client ajouté avec succès" + response.getBody();
+            } else {
+                return "Erreur lors de l'ajout du client: " + response.getBody();
+            }
+        } catch (RestClientException e) {
+            return "Erreur lors de la communication avec l'API Fineract: " + e.getMessage();
+        }
+
+    }
 
     public Object addClient(ClientDtoFineract client) {
         ClientDtoFineract client1 = new ClientDtoFineract();
@@ -159,6 +165,24 @@ public class FineractAPIService  extends AbstractApiService{
 
 
     }
+    public Object DeleteGLAccount(Long id) {
+        HttpHeaders headers = this.createHeaders();
+        HttpEntity<Object> entity = new HttpEntity<>(headers);
+        try {
+            ResponseEntity<Object> response = restTemplate.exchange(fineractApiUrl + "/glaccounts/" + id, HttpMethod.DELETE, entity, Object.class);
+            if (response.getStatusCode().is2xxSuccessful()) {
+                return "glaccount supprime avec succès" + response.getBody();
+            } else {
+                return "Erreur lors de suppression du glaccoun: " + response.getBody();
+            }
+        } catch (HttpClientErrorException.NotFound e) {
+            return "glaccoun non trouvé avec l'ID: " + id;
+        } catch (RestClientException e) {
+            return "Erreur lors de la communication avec l'API Fineract: " + e.getMessage();
+        }
+
+
+    }
 
     public Object addCenter(CenterDtoFineract center) {
         CenterDtoFineract center1 = new CenterDtoFineract();
@@ -218,6 +242,33 @@ public class FineractAPIService  extends AbstractApiService{
         }
 
     }
+    public Object addGLAccounts(glaccountDtoFineract glaccount) {
+        glaccountDtoFineract glaccount1 = new glaccountDtoFineract();
+        glaccount1.setName(glaccount.getName());
+        glaccount1.setType(glaccount.getType());
+        glaccount1.setDescription(glaccount.getDescription());
+        glaccount1.setGlCode(glaccount.getGlCode());
+        glaccount1.setUsage(glaccount.getUsage());
+        glaccount1.setManualEntriesAllowed(glaccount.getManualEntriesAllowed());
+
+
+        HttpHeaders headers = this.createHeaders();
+        HttpEntity<glaccountDtoFineract> entity = new HttpEntity<>(glaccount1, headers);
+
+
+        try {
+            ResponseEntity<Object> response = restTemplate.postForEntity(fineractApiUrl + "/glaccounts", entity, Object.class);
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                return "account ajouté avec succès" + response.getBody();
+            } else {
+                return "Erreur lors de l'ajout du accounts: " + response.getBody();
+            }
+        } catch (RestClientException e) {
+            return "Erreur lors de la communication avec l'API Fineract: " + e.getMessage();
+        }
+
+    }
 
 
     public Object updateGroup(Long id, PutGroupDtoFineract group) {
@@ -235,6 +286,33 @@ public class FineractAPIService  extends AbstractApiService{
                 return "Groupe modifié avec succès" + response.getBody();
             } else {
                 return "Erreur lors de la modification du groupe: " + response.getBody();
+            }
+        } catch (RestClientException e) {
+            return "Erreur lors de la communication avec l'API Fineract: " + e.getMessage();
+        }
+
+    }
+    public Object updateGLAcount(Long id, glaccountDtoFineract glaccount) {
+        glaccountDtoFineract glaccount1 = new glaccountDtoFineract();
+        glaccount1.setName(glaccount.getName());
+        glaccount1.setType(glaccount.getType());
+        glaccount1.setDescription(glaccount.getDescription());
+        glaccount1.setGlCode(glaccount.getGlCode());
+        glaccount1.setUsage(glaccount.getUsage());
+        glaccount1.setManualEntriesAllowed(glaccount.getManualEntriesAllowed());
+
+
+        HttpHeaders headers = this.createHeaders();
+        HttpEntity<glaccountDtoFineract> entity = new HttpEntity<>(glaccount1, headers);
+
+
+        try {
+            ResponseEntity<Object> response = restTemplate.exchange(fineractApiUrl + "/glaccounts/" + id,HttpMethod.PUT, entity, Object.class);
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                return "account modifié avec succès" + response.getBody();
+            } else {
+                return "Erreur lors de la modification du : " + response.getBody();
             }
         } catch (RestClientException e) {
             return "Erreur lors de la communication avec l'API Fineract: " + e.getMessage();
