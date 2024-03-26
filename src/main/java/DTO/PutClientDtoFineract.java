@@ -8,4 +8,5 @@ public class PutClientDtoFineract {
     private String  lastname ;
     private Long legalFormId;
     private String locale;
+    private String externalId;
 }

@@ -9,4 +9,5 @@ public class ClientDtoFineract {
     private String  lastname ;
     private Long legalFormId;
     private String locale;
+    private String externalId;
 }
