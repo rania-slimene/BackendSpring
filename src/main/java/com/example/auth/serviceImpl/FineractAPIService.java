@@ -15,14 +15,14 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class FineractAPIService  extends AbstractApiService{
     @Value("${fineract.api.url}")
     private String fineractApiUrl;
-/* ***************************************** ***********************************************************************/
+/* ***************************************** Offices***********************************************************************/
     public Object getOffices() {
         HttpHeaders headers = this.createHeaders();
         HttpEntity<Object> entity = new HttpEntity<>(headers);
         ResponseEntity<Object> response = restTemplate.exchange(fineractApiUrl + "/offices", HttpMethod.GET, entity, Object.class);
         return response.getBody();
     }
-    /* ***************************************** ***********************************************************************/
+    /* ***************************************** Client***********************************************************************/
     public Object getClient() {
         HttpHeaders headers = this.createHeaders();
         HttpEntity<String> entity = new HttpEntity<>(headers);
@@ -89,14 +89,9 @@ public class FineractAPIService  extends AbstractApiService{
 
     }
 
-    /* ***************************************** ***********************************************************************/
-    public Object getGLAccounts() {
-        HttpHeaders headers = this.createHeaders();
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<Object> response = restTemplate.exchange(fineractApiUrl + "/glaccounts", HttpMethod.GET, entity, Object.class);
-        return response.getBody();
-    }
-    /* ***************************************** ***********************************************************************/
+
+
+    /* ***************************************** Staff***********************************************************************/
 
     public Object addStaff(StaffDtoFineract staff) {
         StaffDtoFineract staff1 = new StaffDtoFineract();
@@ -120,7 +115,7 @@ public class FineractAPIService  extends AbstractApiService{
 
     }
 
-    /* ***************************************** ***********************************************************************/
+    /* ***************************************** roupe***********************************************************************/
     public Object getgroupe() {
         HttpHeaders headers = this.createHeaders();
         HttpEntity<String> entity = new HttpEntity<>(headers);
@@ -192,7 +187,7 @@ public class FineractAPIService  extends AbstractApiService{
 
 
     }
-    /* ***************************************** ***********************************************************************/
+    /* ***************************************** GLAccounts***********************************************************************/
     public Object addGLAccounts(glaccountDtoFineract glaccount) {
         glaccountDtoFineract glaccount1 = new glaccountDtoFineract();
         glaccount1.setName(glaccount.getName());
@@ -220,7 +215,12 @@ public class FineractAPIService  extends AbstractApiService{
         }
 
     }
-
+    public Object getGLAccounts() {
+        HttpHeaders headers = this.createHeaders();
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<Object> response = restTemplate.exchange(fineractApiUrl + "/glaccounts", HttpMethod.GET, entity, Object.class);
+        return response.getBody();
+    }
 
     public Object updateGLAcount(Long id, glaccountDtoFineract glaccount) {
         glaccountDtoFineract glaccount1 = new glaccountDtoFineract();
@@ -263,7 +263,7 @@ public class FineractAPIService  extends AbstractApiService{
     }
 
 
-    /* ***************************************** ***********************************************************************/
+    /* ****************************************Center* ***********************************************************************/
     public Object getCenters() {
         HttpHeaders headers = this.createHeaders();
         HttpEntity<Object> entity = new HttpEntity<>(headers);
@@ -316,7 +316,7 @@ public class FineractAPIService  extends AbstractApiService{
 
 
 
-    /* ***************************************** ***********************************************************************/
+    /* ***************************************** Product***********************************************************************/
     public Object addsavingProduct(SavingProductDtoFineract Savingproduct) {
         SavingProductDtoFineract Savingproduct1 = new SavingProductDtoFineract();
         Savingproduct1.setInMultiplesOf(Savingproduct.getInMultiplesOf());
