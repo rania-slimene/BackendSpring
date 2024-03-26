@@ -34,4 +34,6 @@ public class UserController {
     public Object depositMoney(@PathVariable Long id , @RequestBody DepositMoneyDtoFineract depositMoney) {
         return fineractAPIService.depositMoneytoSavingAccount( depositMoney,id);
     }
+
+
 }
